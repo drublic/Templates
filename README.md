@@ -12,7 +12,7 @@ You can read more about Hogan and Mustache here:
 
 ## Usage
 
-Templates with the attribute `x-template` get indexed by their name and
+Elements with the attribute `x-template` get indexed by their name and
 injected into the DOM where the attribute `x-template-inject` matches the
 template's name.
 
@@ -22,6 +22,8 @@ To inject a specific template you can call
 to be passed to the Hogan template.
 
 ## Example
+
+### Inject
 
 Here is an example template:
 
@@ -39,7 +41,7 @@ In JS you would now call the template with the according data:
       title: 'This was fun!'
     });
 
-This reneders in HTML as:
+This renders in HTML as:
 
     <div x-template-id="foobar__08a2341b"><h1>This was fun!</h1></div>
 
@@ -52,8 +54,9 @@ The ID is generated automatically but you can also define manual IDs by setting
       id: 'title-element'
     });
 
+The generated ID will be stored on each object.
 
-The generated ID will be stored on each object
+### Update
 
 If you want to you can now update the data like this:
 
