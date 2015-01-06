@@ -4,6 +4,10 @@
   "description": "",
   "main": "Templates.js",
   "author": "Hans Christian Reinl <info@drublic.de> (https://drublic.de/)",
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/drublic/Templates.git"
+  },
   "scripts": {
     "test": "jasmine"
   },
