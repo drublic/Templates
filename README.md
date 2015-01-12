@@ -1,9 +1,8 @@
 # Templates - vanilla-templates
 
-[![Build Status](https://api.travis-ci.org/drublic/Templates.svg)](http://travis-ci.org/drublic/Templates)
-
 Template parsing with jQuery and Hogan
 
+[![Build Status](https://api.travis-ci.org/drublic/Templates.svg)](http://travis-ci.org/drublic/Templates)
 
 You can read more about Hogan and Mustache here:
 
