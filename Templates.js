@@ -13,7 +13,10 @@
  * `x-template` and data is the object that holds the data to be passed to
  * the Hogan template.
  */
-void function (global, $, Hogan) {
+void function (global) {
+
+  var $;
+  var Hogan;
 
   var Templates = {};
 
@@ -102,22 +105,43 @@ void function (global, $, Hogan) {
       .remove();
   };
 
+  /**
+   * Initialize with jQuery and Hogan
+   * @param  {Obejct} imports Holds possible imports
+   * @return {void}
+   */
+  Templates.init = function (imports) {
+    $ = imports.jQuery;
+    Hogan = imports.Hogan;
+
+    return Templates;
+  };
+
   /*
    * AMD, module loader, global registration
    */
 
   // Expose loaders that implement the Node module pattern.
   if (typeof module === 'object' && module && typeof module.exports === 'object') {
-    module.exports = Templates;
+    module.exports = Templates.init({
+      jQuery: window.jQuery,
+      Hogan: window.Hogan
+    });
 
   // Register as an AMD module
   } else if (typeof define === 'function' && define.amd) {
-    define('Templates', ['jQuery', 'hogan.js'], function () {
-      return Templates;
+    define('Templates', ['jQuery', 'hogan.js'], function (jQuery, Hogan) {
+      return Templates.init({
+        jQuery: jQuery,
+        Hogan: Hogan
+      });
     });
 
   // Export into global space
   } else if (typeof global === 'object' && typeof global.document === 'object') {
-    global.Templates = Templates;
+    global.Templates = Templates.init({
+      jQuery: global.jQuery,
+      Hogan: global.Hogan
+    });
   }
-}(this, jQuery, Hogan);
+}(this);
