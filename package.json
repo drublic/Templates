@@ -1,6 +1,6 @@
 {
   "name": "vanilla-templates",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "Template parsing with jQuery and Hogan",
   "main": "Templates.js",
   "author": "Hans Christian Reinl <info@drublic.de> (https://drublic.de/)",
