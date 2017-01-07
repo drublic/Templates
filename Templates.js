@@ -124,8 +124,8 @@ void function (global) {
   // Expose loaders that implement the Node module pattern.
   if (typeof module === 'object' && module && typeof module.exports === 'object') {
     module.exports = Templates.init({
-      jQuery: window.jQuery,
-      Hogan: window.Hogan
+      jQuery: require('jquery'),
+      Hogan: require('hogan.js')
     });
 
   // Register as an AMD module
