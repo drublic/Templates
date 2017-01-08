@@ -64,21 +64,25 @@ void function (global) {
 
   /**
    * Inject templates where they are needed
-   * @param  {String} templateName Name of template
-   * @param  {Object} data         Data to inject into template
+   * @param  {String}   templateName Name of template
+   * @param  {Object}   data         Data to inject into template
+   * @param  {Function} callback     Callback function for each element
    * @return {void}
    */
-  Templates.inject = function (templateName, data) {
+  Templates.inject = function (templateName, data, callback) {
     var template = Templates.get(templateName);
     var html = '';
     var i = 0;
+    var length = data.length;
+
+    callback = callback || function () {};
 
     // If data is not provided as an array
     if (!$.isArray(data)) {
       data = [data];
     }
 
-    for (; i < data.length; i++) {
+    for (; i < length; i++) {
       data[i].name = data[i].name || Templates.generateId();
       data[i].id = templateName + '__' + data[i].name;
 
@@ -86,6 +90,10 @@ void function (global) {
     }
 
     $('[x-template-inject~="' + templateName + '"]').html(html);
+
+    for (i = 0; i < length; i++) {
+      callback(data[i]);
+    }
   };
 
   /**

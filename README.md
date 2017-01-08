@@ -55,6 +55,15 @@ The ID is generated automatically but you can also define manual IDs by setting
 
 The generated ID will be stored on each object.
 
+You can pass a thrid parameter `callback` to `Templates.inject`.
+
+    Templates.inject('foobar', {
+      title: 'This was fun!',
+      id: 'title-element'
+    }, function (data) {
+      // Play with `data` for each element
+    });
+
 ### Update
 
 If you want to you can now update the data like this:
