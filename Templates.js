@@ -73,7 +73,7 @@ void function (global) {
     var template = Templates.get(templateName);
     var html = '';
     var i = 0;
-    var length = data.length;
+    var length = 0;
 
     callback = callback || function () {};
 
@@ -81,6 +81,8 @@ void function (global) {
     if (!$.isArray(data)) {
       data = [data];
     }
+
+    length = data.length;
 
     for (; i < length; i++) {
       data[i].name = data[i].name || Templates.generateId();
