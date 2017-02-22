@@ -9,6 +9,12 @@ You can read more about Hogan and Mustache here:
 * Hogan: http://twitter.github.io/hogan.js/
 * Mustache: http://mustache.github.io/
 
+## Install
+
+You can install Templates via npm
+
+    `npm install --save vanilla-templates`
+
 ## Usage
 
 Elements with the attribute `x-template` get indexed by their name and
