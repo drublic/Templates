@@ -85,8 +85,8 @@ void function (global) {
     length = data.length;
 
     for (; i < length; i++) {
-      data[i].name = data[i].name || Templates.generateId();
-      data[i].id = templateName + '__' + data[i].name;
+      data[i].__name = data[i].__name || Templates.generateId();
+      data[i].id = templateName + '__' + data[i].__name;
 
       html += '<div x-template-id="' + data[i].id + '">' + Templates.parse(template, data[i]) + '</div>';
     }
