@@ -140,7 +140,7 @@ void function (global) {
 
   // Register as an AMD module
   } else if (typeof define === 'function' && define.amd) {
-    define('Templates', ['jQuery', 'hogan.js'], function (jQuery, Hogan) {
+    define('Templates', ['jquery', 'hogan.js'], function (jQuery, Hogan) {
       return Templates.init({
         jQuery: jQuery,
         Hogan: Hogan
