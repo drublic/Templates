@@ -70,6 +70,9 @@ You can pass a thrid parameter `callback` to `Templates.inject`.
       // Play with `data` for each element
     });
 
+The forth parameter is a boolean value: `wrap`. If set to `false` the div around
+each rendered template is not printed.
+
 ### Update
 
 If you want to you can now update the data like this:

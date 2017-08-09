@@ -67,15 +67,17 @@ void function (global) {
    * @param  {String}   templateName Name of template
    * @param  {Object}   data         Data to inject into template
    * @param  {Function} callback     Callback function for each element
+   * @param  {Boolean}  wrap         Wrap item with div or not
    * @return {void}
    */
-  Templates.inject = function (templateName, data, callback) {
+  Templates.inject = function (templateName, data, callback, wrap) {
     var template = Templates.get(templateName);
     var html = '';
     var i = 0;
     var length = 0;
 
     callback = callback || function () {};
+    wrap = wrap === undefined ? true : wrap;
 
     // If data is not provided as an array
     if (!$.isArray(data)) {
@@ -90,7 +92,15 @@ void function (global) {
       data[i]['@key'] = i;
       data[i]['@count'] = length;
 
-      html += '<div x-template-id="' + data[i].id + '">' + Templates.parse(template, data[i]) + '</div>';
+      if (wrap) {
+        html += '<div x-template-id="' + data[i].id + '">';
+      }
+
+      html += Templates.parse(template, data[i]);
+
+      if (wrap) {
+        html += '</div>';
+      }
     }
 
     $('[x-template-inject~="' + templateName + '"]').html(html);
