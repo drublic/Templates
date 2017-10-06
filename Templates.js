@@ -1,6 +1,6 @@
 /**
  * TEMPLATES
- * Template parsing with jQuery and Hogan
+ * Template parsing with Hogan
  *
  * Hogan: http://twitter.github.io/hogan.js/
  * Mustache: http://mustache.github.io/
@@ -13,29 +13,35 @@
  * `x-template` and data is the object that holds the data to be passed to
  * the Hogan template.
  */
-void function (global) {
+import Hogan from 'hogan.js'
 
-  var $;
-  var Hogan;
+class Templates {
+  _$ (selector, single) {
+    const elements = document.querySelectorAll(selector)
 
-  var Templates = {};
+    if (single) {
+      return elements[0]
+    }
+
+    return Array.from(elements)
+  }
 
   /**
    * All templates on a page
-   * @return {jQuery Object} All templates on a page
+   * @return {Array} All templates on a page
    */
-  Templates.getTemplates = function () {
-    return $('[x-template]');
-  };
+  getTemplates() {
+    return this._$('[x-template]')
+  }
 
   /**
    * Get a specific template
-   * @param  {String}        page
-   * @return {jQuery Object}      Template
+   * @param  {String} page
+   * @return {Array}  Template
    */
-  Templates.get = function (page) {
-    return Templates.getTemplates().filter('[x-template~="' + page + '"]').html();
-  };
+  get(page) {
+    return this._$(`[x-template~="${page}"]`, true).innerHTML
+  }
 
   /**
    * Parse templates and render them with data
@@ -43,24 +49,24 @@ void function (global) {
    * @param  {Object} data     Data to inject into template
    * @return {String}          Parsed template
    */
-  Templates.parse = function (template, data) {
-    var parsedTemplate = Hogan.compile(template);
+  parse(template, data) {
+    const parsedTemplate = Hogan.compile(template)
 
-    return parsedTemplate.render(data);
-  };
+    return parsedTemplate.render(data)
+  }
 
   /**
    * Generate UUID
    * @return {String}
    */
-  Templates.generateId = function () {
+  generateId() {
     return Math.floor((1 + Math.random()) * 0x10000)
                .toString(16)
                .substring(1) +
            Math.floor((1 + Math.random()) * 0x10000)
                .toString(16)
-               .substring(1);
-  };
+               .substring(1)
+  }
 
   /**
    * Inject templates where they are needed
@@ -70,45 +76,41 @@ void function (global) {
    * @param  {Boolean}  wrap         Wrap item with div or not
    * @return {void}
    */
-  Templates.inject = function (templateName, data, callback, wrap) {
-    var template = Templates.get(templateName);
-    var html = '';
-    var i = 0;
-    var length = 0;
-
-    callback = callback || function () {};
-    wrap = wrap === undefined ? true : wrap;
+  inject(templateName, data, callback = () => {}, wrap = true) {
+    const template = this.get(templateName)
+    let html = ''
 
     // If data is not provided as an array
-    if (!$.isArray(data)) {
+    if (data.constructor !== Array) {
       data = [data];
     }
 
-    length = data.length;
+    let length = data.length
 
-    for (; i < length; i++) {
-      data[i].__name = data[i].__name || Templates.generateId();
-      data[i].id = templateName + '__' + data[i].__name;
-      data[i]['@key'] = i;
-      data[i]['@count'] = length;
+    for (let i = 0; i < length; i++) {
+      data[i].__name = data[i].__name || this.generateId()
+      data[i].id = `${templateName}__${data[i].__name}`
+      data[i]['@key'] = i
+      data[i]['@count'] = length
 
       if (wrap) {
-        html += '<div x-template-id="' + data[i].id + '">';
+        html += `<div x-template-id="${data[i].id}">`
       }
 
-      html += Templates.parse(template, data[i]);
+      html += this.parse(template, data[i])
 
       if (wrap) {
         html += '</div>';
       }
+
     }
 
-    $('[x-template-inject~="' + templateName + '"]').html(html);
+    this._$(`[x-template-inject~="${templateName}"]`, true).innerHTML = html
 
-    for (i = 0; i < length; i++) {
-      callback(data[i]);
+    for (let i = 0; i < length; i++) {
+      callback(data[i])
     }
-  };
+  }
 
   /**
    * Update a given template
@@ -117,53 +119,13 @@ void function (global) {
    * @param  {Object} data         Data to inject into template
    * @return {void}
    */
-  Templates.update = function (templateName, name, data) {
-    var template = Templates.get(templateName);
-    var html = Templates.parse(template, data);
+  update(templateName, name, data) {
+    const template = this.get(templateName);
+    const html = this.parse(template, data);
 
     // Replace element with new element
-    $('[x-template-id="' + templateName + '__' + name + '"]')
-      .after(html)
-      .remove();
-  };
-
-  /**
-   * Initialize with jQuery and Hogan
-   * @param  {Obejct} imports Holds possible imports
-   * @return {void}
-   */
-  Templates.init = function (imports) {
-    $ = imports.jQuery;
-    Hogan = imports.Hogan;
-
-    return Templates;
-  };
-
-  /*
-   * AMD, module loader, global registration
-   */
-
-  // Expose loaders that implement the Node module pattern.
-  if (typeof module === 'object' && module && typeof module.exports === 'object') {
-    module.exports = Templates.init({
-      jQuery: require('jquery'),
-      Hogan: require('hogan.js')
-    });
-
-  // Register as an AMD module
-  } else if (typeof define === 'function' && define.amd) {
-    define('Templates', ['jquery', 'hogan.js'], function (jQuery, Hogan) {
-      return Templates.init({
-        jQuery: jQuery,
-        Hogan: Hogan
-      });
-    });
-
-  // Export into global space
-  } else if (typeof global === 'object' && typeof global.document === 'object') {
-    global.Templates = Templates.init({
-      jQuery: global.jQuery,
-      Hogan: global.Hogan
-    });
+    this._$(`[x-template-id="${templateName}__${name}"]`, true).innerHTML = html
   }
-}(this);
+}
+
+export default Templates

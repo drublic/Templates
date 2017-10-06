@@ -1,6 +1,6 @@
 # Templates - vanilla-templates
 
-Template parsing with jQuery and Hogan
+Template parsing with Hogan
 
 [![Build Status](https://api.travis-ci.org/drublic/Templates.svg)](http://travis-ci.org/drublic/Templates)
 
